@@ -1,14 +1,33 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import members from '../views/members/memberList.vue'
+
+import login from "@/views/auth/login"
 
 Vue.use(VueRouter)
 
 const routes = [
   {
+	path: '/login/',
+	name: 'login',
+	component: login
+  },
+  {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+    meta:{
+      "group": "home"
+    }    
+  },
+  {
+    path: '/members',
+    name: 'members',
+    component: members,
+    meta:{
+      "group": "members"
+    }    
   },
   {
     path: '/about',

@@ -1,0 +1,66 @@
+@import '~bootstrap/scss/bootstrap';
+$primary: #0275d8;
+$success: #5cb85c;
+$danger: #d9534f;
+$faded: #f7f7f7;
+
+
+// progress bar animations
+@-webkit-keyframes progress {
+    0% { width: 0%; margin-left: 0; }
+    25% { width: 25%; margin-left: 0; }
+    50% { width: 50%; margin-left: 25%; }
+    75% { width: 75%; margin-left: 50%; }
+    100% { width: 100%; margin-left: 75%; }
+}
+@keyframes progress {
+    0% { width: 0%; margin-left: 0; }
+    25% { width: 25%; margin-left: 0; }
+    50% { width: 50%; margin-left: 25%; }
+    75% { width: 75%; margin-left: 50%; }
+    100% { width: 100%; margin-left: 75%; }
+}
+
+
+/* The side navigation menu */
+.sidenav {
+    height: 100%; /* 100% Full-height */
+    // width: 265px; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top of largest bootstrap z-index*/
+    top: 0; /* Stay at the top */
+    left: 0px;  
+    width: 165px;
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 10px; /* Place content 60px from the top */
+    font-size: inherit;
+    transition: 0.1s ease-in-out; /* 0.5 second transition effect to slide in the sidenav */ 
+}
+.nav-item{
+    padding: 7px;
+    cursor: pointer
+}
+.nav-item:hover{
+    color: $primary
+}
+.main-app{    
+    margin-left: 165px;
+}
+tr:nth-child(even) {
+    background-color: #fcfcfc;
+}
+.table-borderless > thead{    
+    border-bottom: 1px solid lightgray;
+}
+.btn{
+  border-radius: 75px !important
+}
+.form-control{
+  border-radius: 25px !important
+}
+textarea.form-control{
+  border-radius: 15px !important
+}
+.rounded{
+  border-radius: 15px !important
+}
