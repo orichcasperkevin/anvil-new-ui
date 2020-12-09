@@ -1,8 +1,8 @@
 <template>
 <div>
-    <div class="container">                      
-        <div class="d-flex justify-content-center">
-        <div  class="card w-400 border-0"
+    <div class="container mt-5">                      
+        <div class="d-flex justify-content-center mt-5">
+        <div  class="card w-500 rounded shadow border-0 bg-white"
                 style="background-color: ghostwhite; height: 80vh; min-width: 300px;">
 
             <div class="card-header text-center border-0">

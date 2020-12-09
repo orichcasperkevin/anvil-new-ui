@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import members from '../views/members/memberList.vue'
+import memberAdd from '../views/members/memberAdd'
 
 import login from "@/views/auth/login"
 
@@ -28,6 +29,14 @@ const routes = [
     meta:{
       "group": "members"
     }    
+  },
+  {
+    path: '/memberAdd/',
+    name: 'memberAdd',
+    component: memberAdd,
+    meta:{
+      "group": "members"
+    }
   },
   {
     path: '/about',

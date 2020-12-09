@@ -5,7 +5,7 @@
         <div class="modal fade" id="textModalCenter" tabindex="-1" role="dialog" aria-labelledby="smsModal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header border-0">
                     <h5 class="modal-title text-capitalize" >send message to selected members</h5>                        
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeSmsModal()">
                         <span aria-hidden="true">&times;</span>
@@ -50,7 +50,7 @@
                         <p> check sms outbox later as it may take a while</p>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer border-0">
                     <button type="button" class="btn btn-secondary" v-on:click=closeSmsModal() data-dismiss="modal">Close</button>
                     <span v-if = "sms_status.length == 0">
                     <button type="button" class="btn btn-success" 
@@ -123,7 +123,7 @@ watch:{
 methods: {
     // Define the method that emits data to the parent as the first parameter to `$emit()`.
     // This is referenced in the <template> call in the parent. The second parameter is the payload.
-    emitToParent (event) {        
+    emitToParent () {
         this.$emit('messageSet', this.message)
     },
     showChangeButton: function(){        
