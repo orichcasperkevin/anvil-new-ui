@@ -70,7 +70,7 @@
 			</div>
 		<!-- aplication content -->
 		<div id="main_app" class="bg-light main-app">		
-			<keep-alive include="">
+			<keep-alive include="memberList">
 				<router-view 
 					class="p-4"
 					v-on:newLogin="newLogin"

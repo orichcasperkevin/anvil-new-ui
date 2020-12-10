@@ -1,5 +1,5 @@
 <template>
-	<div class="ml-4">
+	<div class="">
 		<!-- this compnent requires text message modal -->
 		<textmessage :memberIds="member_ids"/>
 
@@ -12,38 +12,36 @@
 		<div class="container row">
 			<!-- filters -->
 			<section class="col-lg-2 rounded shadow bg-white">
-					<h5 class="mt-3">Filters</h5>
-					<div class="mt-5">	
-							<p>Age</p>								
-							<div class="d-flex flex-row justify-content-center">										
-								<div class="form-group p-1">
-									<small>min : </small><small><a href="#" v-on:click="resetAge" class="">
-										<i class="fa fa-refresh" aria-hidden="true"></i>
-									</a></small>
-									<input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age" style="max-width:100px">
-								</div>
-								<div class="form-group p-1 ">
-									<small>max : </small><small><a href="#" v-on:click="resetAge" class="">
-										<i class="fa fa-refresh" aria-hidden="true"></i>
-									</a></small>
-									<input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age" style="max-width:100px">
-								</div>										
-							</div>
-						</div>
-						<hr>
-						<div class="mt-5">
-							<p>Gender</p>
-							<div class="d-flex justify-content-end">									
-								<small><a href="#" v-on:click="resetGender">
+					<h5 class="mt-3 rounded bg-light p-1">Filters</h5>
+					<div class="mt-5 rounded bg-light">	
+						<p class="ml-2">Age</p>								
+						<div class="d-flex flex-row justify-content-center">										
+							<div class="form-group p-1">
+								<small>min : </small><small><a href="#" v-on:click="resetAge" class="">
 									<i class="fa fa-refresh" aria-hidden="true"></i>
 								</a></small>
+								<input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age" style="max-width:100px">
 							</div>
-							<div class="d-flex" style="padding : 10px">										
-								<input class="ml-2" type="radio" name="optradio" value="M" v-model="gendersearch"> <span class="ml-2">Male</span>
-								<input class="ml-2" type="radio" name="optradio" value ="F" v-model="gendersearch"> <span class="ml-2">Female</span>										
-							</div>
+							<div class="form-group p-1 ">
+								<small>max : </small><small><a href="#" v-on:click="resetAge" class="">
+									<i class="fa fa-refresh" aria-hidden="true"></i>
+								</a></small>
+								<input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age" style="max-width:100px">
+							</div>										
 						</div>
-						<hr>
+					</div>
+					<div class="mt-5 rounded bg-light">
+						<p class="ml-2">Gender</p>
+						<div class="mr-2 d-flex justify-content-end">									
+							<small><a href="#" v-on:click="resetGender">
+								<i class="fa fa-refresh" aria-hidden="true"></i>
+							</a></small>
+						</div>
+						<div class="d-flex" style="padding : 10px">										
+							<input class="ml-2" type="radio" name="optradio" value="M" v-model="gendersearch"> <span class="ml-2">Male</span>
+							<input class="ml-2" type="radio" name="optradio" value ="F" v-model="gendersearch"> <span class="ml-2">Female</span>										
+						</div>
+					</div>
 			</section>
 			<!-- list Members -->
 			<section class="col-lg-10">
@@ -381,7 +379,7 @@ export default {
 	mounted(){
 		this.getMembers()
 		this.getGroups()
-	},     
+	},
 	watch: {
 	//search for member
 		all_members: function(){
@@ -468,7 +466,7 @@ export default {
 					this.member_ids.push(this.members[i].member.id)
 				}
 				this.all_member_ids = this.member_ids
-				this.all_members = false        
+				this.all_members = false
 			})
 			.catch((err) => {
 				alert(err)
