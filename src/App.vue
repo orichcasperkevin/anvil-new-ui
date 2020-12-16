@@ -34,9 +34,9 @@
 							<i class="mr-2  fa fa-id-card-o" aria-hidden="true"></i>				
 							members
 						</li>				
-						<li class="nav-item" :class="{ 'text-primary' : current_route_group == 'companies'}"
-							@click="goto('/companies')">
-							<i class="mr-2  fa fa-building-o" aria-hidden="true"></i>
+						<li class="nav-item" :class="{ 'text-primary' : current_route_group == 'groups'}"
+							@click="goto('/groups-landing')">
+							<i class="fa fa-users" aria-hidden="true"></i>
 							groups
 						</li>
 						<li class="nav-item" :class="{ 'text-primary' : current_route_group == 'tablets'}"

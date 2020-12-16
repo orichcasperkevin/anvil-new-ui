@@ -75,9 +75,9 @@
 									<router-link :to="{name: 'memberAdd'}" class="dropdown-item" style="text-decoration: none">								
 										Add member						
 									</router-link>
-									<a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV">
-										Import from CSV
-									</a>                    
+									<router-link :to="{name: 'memberAddFromCSV'}" class="dropdown-item" style="text-decoration: none">								
+										Import from CSV						
+									</router-link>                  
 								</div>
 						</div>                      
 					</div>
