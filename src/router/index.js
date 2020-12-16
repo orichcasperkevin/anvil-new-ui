@@ -14,6 +14,7 @@ import memberDetail from '../views/members/memberDetail'
 //groups
 import groupsLanding from "../views/groups/groupsLanding"
 import groupList from "../views/groups/groupList"
+import groupDetail from "../views/groups/groupDetail"
 
 Vue.use(VueRouter)
 
@@ -93,6 +94,14 @@ const routes = [
 				},
 			},
 		]
+	},
+	{
+		path:'/groupDetail/:id/',
+		name: 'groupDetail',
+		component: groupDetail,
+		meta:{
+			"group": "groups"
+		},
 	},
 ]
 

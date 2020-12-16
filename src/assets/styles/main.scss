@@ -64,7 +64,9 @@ textarea.form-control{
 .rounded{
   border-radius: 15px !important
 }
-
+.cursor-pointer{
+    cursor: pointer;
+}
 .nav-pills > li > a.active {  
     color: black!important;
     background-color: ghostwhite!important;

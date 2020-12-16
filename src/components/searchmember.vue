@@ -27,13 +27,13 @@
 
                 <table class="table border-0" >
                     <tbody>
-                    <tr class="searchedItem border-0" v-for="data in found_members.response">
+                    <tr class="searchedItem border-0" v-for="(data,index) in found_members.response" :key="index">
                         <a href="#" style="text-decoration: none" v-on:click="selectMember(data.member.id,data.member.first_name,data.member.last_name)"> 
                         <td class="border-0">
                         
-                            <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                            <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                            <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+                            <img v-if = "data.gender == 'M'" style = "height: 32px " src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+                            <img v-if = "data.gender == 'F'" style = "height: 32px " src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+                            <img v-if = "data.gender == 'R'" style = "height: 32px " src="@/assets/avatars/icons8-contacts-96.png">
                             
                             <span class = "text-secondary text-capitalize">
                                 {{data.member.first_name}} {{data.member.last_name}} 
@@ -55,7 +55,7 @@
                                 <input type="text" class="form-control"  placeholder="first name" v-model="first_name" autofocus>
                                 <p v-if="first_name_errors.length">
                                         <ul>
-                                                <small><li v-for="error in first_name_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                <small><li v-for="(error,index) in first_name_errors" :key="index"><p class="text-danger">{{ error }}</p></li></small>
                                         </ul>
                                 </p>
                         </div>
@@ -64,7 +64,7 @@
                                 <input type="text" class="form-control"  placeholder="last name" v-model="last_name" >
                                 <p v-if="last_name_errors.length">
                                         <ul>
-                                                <small><li v-for="error in last_name_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                <small><li v-for="(error,index)  in last_name_errors" :key="index"><p class="text-danger">{{ error }}</p></li></small>
                                         </ul>
                                 </p>
                         </div>
@@ -78,7 +78,7 @@
                                 </div>
                                 <p v-if="gender_errors.length">
                                 <ul>
-                                        <small><li v-for="error in gender_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                        <small><li v-for="(error,index) in gender_errors" :key="index"><p class="text-danger">{{ error }}</p></li></small>
                                 </ul>
                                 </p>
                         </div>
@@ -94,12 +94,12 @@
                                 </span>
                                 <p v-if="phone_number_errors.length">
                                         <ul>
-                                                <small><li v-for="error in phone_number_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                <small><li v-for="(error,index) in phone_number_errors" :key="index"    ><p class="text-danger">{{ error }}</p></li></small>
                                         </ul>
                                 </p>
                                 <p v-if="phone_number_OK.length">
                                         <ul>
-                                                <small><li v-for="error in phone_number_OK"><p class="text-success">{{ error }}</p></li></small>
+                                                <small><li v-for="(error,index) in phone_number_OK" :key="index"><p class="text-success">{{ error }}</p></li></small>
                                         </ul>
                                 </p>
                         </div>
@@ -122,14 +122,14 @@
 <script>
 export default {
 name: 'searchmember',
-created () {        
-    this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
+created () { 
 },
 data() {
     return {
         childMessage: '',
         selected_input: "existing_member",
         //member search
+        debounced_timeout: null,
         memberSearch: '',found_members:[],
         memberSearch_status: '',
         selectedMember: null,
@@ -153,56 +153,59 @@ watch:{
     memberSearch: function () {
         var array = this.memberSearch.split(" ")
         if (this.memberSearch.length > 0 && array.length == 1){
-            this.showMemberInput = true        
-            this.debouncedGetAnswer()
-        }else{
+            this.showMemberInput = true  
+            clearTimeout(this.debounce_timeout)
+				this.debounce_timeout = setTimeout(()=>{
+                    this.searchByFirstName()
+			},800)      
+		}
+		else{
             this.memberSearch_status = ''
             this.found_members = []
             this.showMemberInput = false                
         }
-    },  
+    },  	
     phone_number: function(){
-                if (this.phone_number.isNaN){
-                        this.phone_number_errors = []
-                        this.phone_number_errors.push(" phone number should be numbers only")
-                }
-                if (this.phone_number.length > 9){
-                        this.phone_number_OK = []
-                        this.phone_number_errors = []
-                        this.phone_number_errors.push("number too long")
-                }
-                if (this.phone_number.length < 9){
-                        this.phone_number_OK = []
-                        this.phone_number_errors = []
-                        this.phone_number_errors.push("number too short")
-                }
-                if (this.phone_number.length == 9){
-                        this.phone_number_errors = []
-                        this.phone_number_OK.push(" number OK")
-                }
-        },
+		if (this.phone_number.isNaN){
+			this.phone_number_errors = []
+			this.phone_number_errors.push(" phone number should be numbers only")
+		}
+		if (this.phone_number.length > 9){
+			this.phone_number_OK = []
+			this.phone_number_errors = []
+			this.phone_number_errors.push("number too long")
+		}
+		if (this.phone_number.length < 9){
+			this.phone_number_OK = []
+			this.phone_number_errors = []
+			this.phone_number_errors.push("number too short")
+		}
+		if (this.phone_number.length == 9){
+			this.phone_number_errors = []
+			this.phone_number_OK.push(" number OK")
+		}
+    },
 
 },
 methods: {
     // Define the method that emits data to the parent as the first parameter to `$emit()`.
     // This is referenced in the <template> call in the parent. The second parameter is the payload.
-    emitToParent (event) {
+    emitToParent () {
         this.$emit('memberSelected', this.selectedMember)
     },
     //search for member
-    getAnswer: function () {
-        var vm = this
+    searchByFirstName: function () {
         if (this.memberSearch.length > 0){
             this.found_members = []
             this.memberSearch_status = 'searching...'
             this.$http.get(this.$BASE_URL + '/api/members/filter-by-first_name/' + this.memberSearch +'/')
             .then(function (response) {
-                vm.found_members = {"response": response.data } 
-                vm.memberSearch_status = ''                
+                this.found_members = {"response": response.data } 
+                this.memberSearch_status = ''                
             })
-            .catch(function (error) {
-                vm.memberSearch_status = ''  
-                vm.showMemberInput = false
+            .catch(function () {
+                this.memberSearch_status = ''  
+                this.showMemberInput = false
             })
         }
     },
@@ -219,71 +222,71 @@ methods: {
         this.gender_errors = []
 
         if (! this.first_name){
-                this.first_name_errors.push('you must enter the first name')
-                return false;
+			this.first_name_errors.push('you must enter the first name')
+			return false;
         }
         if (this.first_name.split(' ').length > 1){
-                this.first_name_errors.push('first name must be one word only, remove any spaces')
-                return false;
+			this.first_name_errors.push('first name must be one word only, remove any spaces')
+			return false;
         }
         if(! this.last_name){
-                this.last_name_errors.push('you must enter a last name')
-                return false;
+			this.last_name_errors.push('you must enter a last name')
+			return false;
         }
         if (this.last_name.split(' ').length > 1){
-                this.last_name_errors.push('last name must be one word only, remove spaces')
-                return false;
+			this.last_name_errors.push('last name must be one word only, remove spaces')
+			return false;
         }
         if (! this.gender ){
-                this.gender_errors.push('select gender')
-                return false;
+			this.gender_errors.push('select gender')
+			return false;
         }
         this.adding_member = true
         this.$http({
-                method: 'post',
-                url: this.$BASE_URL + '/api/members/add-member/',
-                data: {
-                    first_name: this.first_name,
-                    last_name: this.last_name,
-                    gender: this.gender,
-                    email: ''         
-                }
-                }).then(response => {                
-                    var added_member = []
-                    added_member.push(response.data )                  
-                    this.gender_male = false
-                    this.gender_female = false
-                    this.last_name = ''
-                    this.first_name = ''                                                            
-                    this.adding_member = false
-                    
-                    var added_member_id = added_member[0].member.id
-                    var added_member_firstname = added_member[0].member.first_name
-                    var added_member_lastname = added_member[0].member.last_name
+			method: 'post',
+			url: this.$BASE_URL + '/api/members/add-member/',
+			data: {
+				first_name: this.first_name,
+				last_name: this.last_name,
+				gender: this.gender,
+				email: ''         
+			}
+			}).then(response => {                
+				var added_member = []
+				added_member.push(response.data )                  
+				this.gender_male = false
+				this.gender_female = false
+				this.last_name = ''
+				this.first_name = ''                                                            
+				this.adding_member = false
+				
+				var added_member_id = added_member[0].member.id
+				var added_member_firstname = added_member[0].member.first_name
+				var added_member_lastname = added_member[0].member.last_name
 
-                    this.selected_input =  "existing_member"                    
-                    this.selectMember(added_member_id,added_member_firstname,added_member_lastname)                    
-                    
-                    this.addContact(added_member_id)
-                    var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
-                    this.$store.dispatch('update_member_list_version', new_version)  
-                    alert("member added succesfully")   
-                })
-                .catch((err) => {
-                    this.add_member_error.push(err)
-                })
+				this.selected_input =  "existing_member"                    
+				this.selectMember(added_member_id,added_member_firstname,added_member_lastname)                    
+				
+				this.addContact(added_member_id)
+				var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
+				this.$store.dispatch('update_member_list_version', new_version)  
+				alert("member added succesfully")   
+			})
+			.catch((err) => {
+				this.add_member_error.push(err)
+			})
         
     },
     addContact: function(added_member_id){
         this.$http({
-                method:'post',
-                url: this.$BASE_URL + '/api/members/add-member-contact/',
-                data: {
-                        member_id: added_member_id,
-                        postal_address: this.postal_address,
-                        phone: this.country_code + this.phone_number,
-                        contact: this.contact
-                }
+			method:'post',
+			url: this.$BASE_URL + '/api/members/add-member-contact/',
+			data: {
+					member_id: added_member_id,
+					postal_address: this.postal_address,
+					phone: this.country_code + this.phone_number,
+					contact: this.contact
+			}
         })            
     },
 }

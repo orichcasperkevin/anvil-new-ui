@@ -11,12 +11,12 @@
                         </button> 
                     </div>
                 </div>                                               
-                <div v-if = "fetch_data_error.length == 0" class="mt-4 rounded bg-white">
+                <div v-if = "fetch_data_error.length == 0" class="mt-4 p-3 rounded bg-white">
                     <table v-if="groups" class="table table-borderless">                
                         <thead>
                             <tr>										
                                 <th>Name</th>
-                                <th>groups</th>
+                                <th>members</th>
                             </tr>
                         </thead>     
                         <tbody>

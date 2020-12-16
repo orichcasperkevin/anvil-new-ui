@@ -8,20 +8,27 @@
         <!-- NAVIGATION ON THE LEFT -->
         <div class="col-sm-10 col-md-5 col-lg-3 bg-white rounded " style="height: 100vh">
             <h5 class="mt-3 rounded bg-light p-1">Filters</h5>
-            <div class="mt-5 d-flex justify-content-between">
-                <b>
-                    folders
-                    </b>
+            <div class="mt-5 list-group">
+                <span class="list-group-item list-group-item-action border-0 cursor-pointer" 
+                    :class="{ 'text-primary' : all_groups_selected }"
+                    @click="all_groups_selected = true">
+                    <i class="mr-2 fa fa-users" aria-hidden="true"></i>Independent groups
+                </span>
+            </div>
+            <hr>
+            <div class="ml-2 mt-5 d-flex justify-content-between">
+                    <b>folders</b>
                     <a class="btn btn-sm btn-outline-success " 
-                    href="#" data-toggle="modal" 
-                    data-target="#addModal" 
-                    style="text-decoration: none" v-on:click="switchToFolder()">
-                    + Add folder
+                        href="#" data-toggle="modal" 
+                        data-target="#addModal" 
+                        style="text-decoration: none" v-on:click="switchToFolder()">
+                        + Add folder
                     </a>
-                </div>
-                <div v-if="groups" class="mt-4">
-                    <div class="ml-2 list-group" v-for="(data,index) in groups.response" :key="index">
-                        <router-link :to="`/groupList/`+ data.id + `/` + data.name" class="row list-group-item list-group-item-action border-0" >
+            </div>
+            <div v-if="groups" class="mt-4">
+                <div class="ml-2 list-group" v-for="(data,index) in groups.response" :key="index">
+                    <div class="row list-group-item list-group-item-action border-0" 
+                        @click="gotoFolder(data.id,data.name)">
                         <span class="d-flex justify-content-between">
                             <div>
                                 <i class="fa fa-folder-open" aria-hidden="true"></i>
@@ -31,41 +38,53 @@
                             {{data.number_of_groups}}
                             </span>
                         </span>
-                        </router-link>
                     </div>
-                    <hr>
-                </div>             
+                </div>
+                <hr>
+            </div>
+        </div>
+        <!-- CONTENT IN THE MIDDLE -->
+        <div class="col-sm-10 col-md-8 col-lg-9">   
+            <hr class="d-sm-block d-lg-none">
+            <router-view id="folder-content" :class="{ 'd-none' : all_groups_selected}"></router-view>
+            <div v-if="all_groups_selected">
                 <div class="d-flex justify-content-between">
-                <b>groups</b>
-                    <a class="btn btn-sm btn-success" 
+                    <h3><i class="mr-2 fa fa-users" aria-hidden="true"></i>Independent groups</h3>
+                    <a class="p-2 btn btn-sm btn-success" 
                         href="#" data-toggle="modal" 
                         v-on:click="switchToGroup()"
                         data-target="#addModal" style="text-decoration: none">
                     + Add group
                     </a>
                 </div>
-                <div v-if="independent_groups" class="mt-4">
-                    <div class="list-group" v-for="(data,index) in independent_groups.response" :key="index">
-                        <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
-                        <span class="d-flex justify-content-between">
-                            <div>
-                                <i class="fa fa-refresh" aria-hidden="true"></i>
-                                {{data.name}}
-                            </div>
-                            <span class="text-muted font-weight-bold">
-                                {{data.number_of_members}}
-                            </span>
-                        </span>
-                    </router-link>
-                    </div>
+                <div v-if="independent_groups" class="mt-4 p-3 bg-white rounded">
+                    <table class="table table-borderless">                
+                            <thead>
+                                <tr>										
+                                    <th>Name</th>
+                                    <th>members</th>
+                                </tr>
+                            </thead>     
+                            <tbody>
+                                <tr v-for="(data,index) in independent_groups.response" :key="index">                           
+                                    <td>
+                                        <router-link  :to="`/groupDetail/`+ data.id" >
+                                            <span class="d-flex text-secondary">
+                                                <i class="mr-2 fa fa-users" aria-hidden="true"></i>
+                                                {{data.name}}
+                                            </span>
+                                        </router-link>
+                                    </td>
+                                    <td>
+                                        <p>                         
+                                            <span class="badge badge-pill badge-secondary">{{data.number_of_members}}</span>
+                                        </p>
+                                    </td>
+                                </tr>             
+                            </tbody>
+                        </table>
                 </div>
-        </div>
-        <!-- CONTENT IN THE MIDDLE -->
-        <div class="col-sm-10 col-md-8 col-lg-9">   
-            <hr class="d-sm-block d-lg-none">        
-            <router-view id="folder-content">
-
-            </router-view>
+            </div>
         </div>  
                 
         <section>
@@ -121,6 +140,7 @@ export default {
     name: 'groupsLanding',
     data () {
     return {      
+        all_groups_selected: true,
         groups: null,independent_groups: null,
         foundItems: null,foundItems_independent: null,
         fetch_data_error: [],
@@ -138,44 +158,46 @@ export default {
         '$route': 'fetchData'
     },
     methods: {
-    scrollToElement: function(element){
-            document.getElementById(element).scrollIntoView();
-    },
-    fetchData() {      
-        this.fetch_data_error = []
-        //get groups i folders
-        this.$http.get(this.$BASE_URL + '/api/groups/group-of-church-groups-list')
+        
+        fetchData() {      
+            this.fetch_data_error = []
+            //get groups i folders
+            this.$http.get(this.$BASE_URL + '/api/groups/group-of-church-groups-list')
+                .then(response => {
+                    this.groups = {"response": response.data }
+                    var array = this.groups.response
+                    this.foundItems = array.length
+                })
+                .catch((err) => {
+                    this.fetch_data_error.push(err)
+                })
+
+            // get independent groups
+            this.$http.get(this.$BASE_URL + '/api/groups/church-groups-not-in-group/')
             .then(response => {
-                this.groups = {"response": response.data }
-                var array = this.groups.response
-                this.foundItems = array.length
+                this.independent_groups = {"response": response.data }
+                var array = this.independent_groups.response
+                this.foundItems_independent = array.length
+                localStorage.setItem('group_list_independent',JSON.stringify({"response": response.data }))
+                this.$store.dispatch('update_isLoading', false)
+
             })
             .catch((err) => {
                 this.fetch_data_error.push(err)
+                this.$store.dispatch('update_isLoading', false)
             })
-
-        // get independent groups
-        this.$http.get(this.$BASE_URL + '/api/groups/church-groups-not-in-group/')
-        .then(response => {
-            this.independent_groups = {"response": response.data }
-            var array = this.independent_groups.response
-            this.foundItems_independent = array.length
-            localStorage.setItem('group_list_independent',JSON.stringify({"response": response.data }))
-            this.$store.dispatch('update_isLoading', false)
-
-        })
-        .catch((err) => {
-            this.fetch_data_error.push(err)
-            this.$store.dispatch('update_isLoading', false)
-        })
-    },
-    switchToFolder: function(){
-            this.group_type = 'folder'
-    },
-    switchToGroup: function(){
-            this.group_type = 'group'
-    },
-    addGroup: function(){
+        },
+        switchToFolder: function(){
+                this.group_type = 'folder'
+        },
+        switchToGroup: function(){
+                this.group_type = 'group'
+        },
+        gotoFolder: function(id,name){
+            this.all_groups_selected = false
+            this.$router.push(`/groupList/${id}/${name}`)
+        },
+        addGroup: function(){
         var url = ''
         this.name_errors = [],
         this.description_errors = []
@@ -217,7 +239,6 @@ export default {
             alert("an error occured while trying to add group")
         })
     }
-
     }
 }
 </script>
