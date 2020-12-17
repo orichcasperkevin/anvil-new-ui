@@ -462,7 +462,6 @@ export default {
 				this.members = response.data
 				this.member_ids = []
 				for (var i in this.members){
-					console.log(this.members[i])
 					this.member_ids.push(this.members[i].member.id)
 				}
 				this.all_member_ids = this.member_ids
