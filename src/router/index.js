@@ -16,6 +16,9 @@ import groupsLanding from "../views/groups/groupsLanding"
 import groupList from "../views/groups/groupList"
 import groupDetail from "../views/groups/groupDetail"
 
+//finances
+import generalFinance from "../views/finances/generalFinance"
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -83,7 +86,10 @@ const routes = [
 			{
 				path: '',
 				name: 'groupsLanding',
-				component: groupList
+				component: groupList,
+				meta:{
+					"group": "groups"
+				},
 			},
 			{
 				path: '/groupList/:id/:group_name',
@@ -101,6 +107,15 @@ const routes = [
 		component: groupDetail,
 		meta:{
 			"group": "groups"
+		},
+	},
+	//finances
+	{
+		path: '/finances/',
+		name: 'generalFinance',
+		component: generalFinance,
+		meta:{
+			"group": "finances"
 		},
 	},
 ]

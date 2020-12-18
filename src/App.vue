@@ -44,8 +44,8 @@
 							<i class="mr-2  fa fa-tablet" aria-hidden="true"></i>
 							events
 						</li>
-						<li class="nav-item" :class="{ 'text-primary' : current_route_group == 'users'}"
-							@click="goto('/users')">
+						<li class="nav-item" :class="{ 'text-primary' : current_route_group == 'finances'}"
+							@click="goto('/finances')">
 							<i class="mr-2  fa fa-user-o" aria-hidden="true"></i>
 							finances
 						</li>
