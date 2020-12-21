@@ -11,15 +11,16 @@
                 <li class="breadcrumb-item active" aria-current="page">finances</li>
             </ol>
         </nav>        
-        <div class = "container">            
-            <div class = "row">
+        <div >            
+            <div class = "d-flex">
                 <!-- NAVIGATIONS -->                
-                <div class="filters col-sm-12 col-md-8 col-lg-2" >
-                        <div class="nav success flex-column nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <div class="col-lg-2 rounded bg-white" style="height: 100vh">
+                        <h5 class="mt-3 rounded bg-light p-1">Nav</h5>
+                        <div class="mt-5 nav success flex-column nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true" 
                                     v-on:click=" hide_content = true">       
                                     <span class="row">
-                                        <i class="fa fa-refresh" aria-hidden="true"></i>                                        
+                                        <i class="mr-2 fa fa-clock-o" aria-hidden="true"></i>                                        
                                         Quick links
                                     </span>                                                                     
                                 </a>
@@ -27,7 +28,7 @@
                                 <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true" 
                                     v-on:click="getAll(); hide_content=false">       
                                     <span class="row">
-                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                        <i class="mr-2 fa fa-envelope-open" aria-hidden="true"></i>
                                         Envelopes
                                     </span>                                                                     
                                 </a>
@@ -37,26 +38,26 @@
                                         v-on:click="tithes_selected = true; expenditures_selected=false; getIncome()">       
 
                                     <span class="row">
-                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                        <i class="mr-2 fa fa-money" aria-hidden="true"></i>
                                         Incomes
                                     </span>                                                                     
                                 </a>
                                 <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" data-toggle="pill" href="#v-pills-expenditure" role="tab" aria-controls="v-pills-expenditure" aria-selected="false" v-on:click="getExpenditures()">
                                     <span class="row">
-                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                        <i class="mr-2 fa fa-share-square" aria-hidden="true"></i>
                                         Expenditure
                                     </span>                                      
                                 </a>  
                                 <router-link class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" :to="{name: 'projectList'}">
                                     <span class="row">
-                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                        <i class="mr-2 fa fa-line-chart" aria-hidden="true"></i>
                                         Projects 
                                     </span>                                     
                                 </router-link>
                             </div>
                 </div>
                 <!-- CONTENT -->
-                <div class = "col-lg-7 col-sm-12">
+                <div class = "col-lg-10">
                     <div class="tab-content" id="v-pills-tabContent">
                        <!-- ENVELOPES -->
                         <div class="tab-pane fade show active" id="v-pills-envelopes" role="tabpanel" aria-labelledby="v-pills-envelopes-tab">
@@ -70,64 +71,61 @@
                                 </a>                                                                                                                       
                             </div>
                             <!-- when content is to be shown -->
-                            <div  class="container" :class="{'d-none': hide_content}">
-                                <div class="d-flex justify-content-center">                                          
-                                    <!-- nav pills for offerings,tithes and others -->
-                                    <div class="col-sm-12 col-lg-10" >
-                                        <hr class="d-sm-block d-lg-none">  
-                                        <div class="d-flex flex-nowrap">
-                                            <a href="#" class="p-2" @click=scrollRight()>
-                                                <i class="arrow left"></i>
-                                            </a>
-                                            <ul class="mb-2 d-flex flex-nowrap nav nav-pills scrollbar-none"
-                                                id="pills-tab" role="tablist"                                                    
-                                                style="overflow-x: scroll;white-space: nowrap">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link active" 
-                                                            id="pills-all-tab" 
-                                                            data-toggle="pill" 
-                                                            href="#pills-all" role="tab" 
-                                                            aria-controls="pills-all" 
-                                                            Tithe="true"
-                                                            v-on:click = "getAll(); scrollToElement('pills-tithe-tab')">
-                                                            All
-                                                        </a>
-                                                    </li> 
-                                                    <li class="nav-item">
-                                                        <a class="nav-link" 
-                                                            id="pills-tithe-tab" 
-                                                            data-toggle="pill" 
-                                                            href="#pills-home" role="tab" 
-                                                            aria-controls="pills-home" 
-                                                            Tithe="true"
-                                                            v-on:click = "getTithes(); scrollToElement('pills-tithe-tab')">
-                                                            Tithes
-                                                        </a>
-                                                    </li>                                                                                                                        
-                                                    <li class="nav-item" v-for="(type,index) in offering_types" :key="index">
-                                                        <a class="nav-link text-capitalize" :id="`type-${type.id}`" 
-                                                            data-toggle="pill" :href="`#pills-${type.id}`" role="tab" 
-                                                            :aria-controls="`pills-${type.id}`" 
-                                                            aria-selected="false"
-                                                            @click="offering_type = type;scrollToElement(`type-${type.id}`);getOfferings()">                                                                    
-                                                            <span v-if="type.name != 'general offering'">{{type.name}}</span>
-                                                            <span v-else>Offering</span>
-                                                        </a>
-                                                    </li>
-                                            </ul>                                            
-                                            <a href="#" class="p-2" @click=scrollLeft()>
-                                                <i class="arrow right"></i>
-                                            </a>
-                                        </div>                                               
-                                    </div>                                          
-                                </div>
+                            <div  class="container" :class="{'d-none': hide_content}">       
+                                <!-- nav pills for offerings,tithes and others -->
+                                <div class="d-flex justify-content-center col-lg-12" >
+                                    <hr class="d-sm-block d-lg-none">  
+                                    <div class="d-flex flex-nowrap">
+                                        <a href="#" class="p-2" @click=scrollRight()>
+                                            <i class="arrow left"></i>
+                                        </a>
+                                        <ul class="mb-2 d-flex flex-nowrap nav nav-pills scrollbar-none"
+                                            id="pills-tab" role="tablist"                                                    
+                                            style="overflow-x: scroll;white-space: nowrap">
+                                                <li class="nav-item">
+                                                    <a class="nav-link active" 
+                                                        id="pills-all-tab" 
+                                                        data-toggle="pill" 
+                                                        href="#pills-all" role="tab" 
+                                                        aria-controls="pills-all" 
+                                                        Tithe="true"
+                                                        v-on:click = "getAll(); scrollToElement('pills-tithe-tab')">
+                                                        All
+                                                    </a>
+                                                </li> 
+                                                <li class="nav-item">
+                                                    <a class="nav-link" 
+                                                        id="pills-tithe-tab" 
+                                                        data-toggle="pill" 
+                                                        href="#pills-home" role="tab" 
+                                                        aria-controls="pills-home" 
+                                                        Tithe="true"
+                                                        v-on:click = "getTithes(); scrollToElement('pills-tithe-tab')">
+                                                        Tithes
+                                                    </a>
+                                                </li>                                                                                                                        
+                                                <li class="nav-item" v-for="(type,index) in offering_types" :key="index">
+                                                    <a class="nav-link text-capitalize" :id="`type-${type.id}`" 
+                                                        data-toggle="pill" :href="`#pills-${type.id}`" role="tab" 
+                                                        :aria-controls="`pills-${type.id}`" 
+                                                        aria-selected="false"
+                                                        @click="offering_type = type;scrollToElement(`type-${type.id}`);getOfferings()">                                                                    
+                                                        <span v-if="type.name != 'general offering'">{{type.name}}</span>
+                                                        <span v-else>Offering</span>
+                                                    </a>
+                                                </li>
+                                        </ul>                                            
+                                        <a href="#" class="p-2" @click=scrollLeft()>
+                                            <i class="arrow right"></i>
+                                        </a>
+                                    </div>                                               
+                                </div> 
                             </div>                                
                             <!-- ENVELOP TABS CONTENT -->
                             <div class="tab-content" id="pills-tabContent">   
                                 <!-- tithes -->
                                 <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">                                                                          
                                     <h3 v-if="! hide_content" class="font-weight-bold">All</h3>
-                                    <hr>
                                     <all
                                         v-on:membersSelected="setMemberIds"
                                         :payment_methods = "payment_methods"
@@ -258,29 +256,22 @@
                     </div>
                 </div>
                 <!-- ACTION BUTTONS -->
-                <div class = "col-12 col-sm-10 col-md-8 col-lg-3">
+                <div class = "mt-5 mr-5" style="position:absolute; right: 0">
                     <!-- add for tithes -->
-                    <div class="btn-group" style="padding: 0px 0px 25px 10px"
+                    <div class="mt-4 btn-group"
                          v-if = "(tithes_selected || offerings_selected)">
-                            <a href="#" id="dropdownMenuReference" data-toggle="dropdown"
+                            <a class="btn btn-success"
+                                href="#" id="dropdownMenuReference" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" data-reference="parent"
                                 style="text-decoration: none">
-                                <div class="add-button">
-                                    <b>+</b> New Envelope
-                                </div>                                
+                                    + New Envelope                               
                             </a>
                             <a href="#" id="tithe-modal-button" data-toggle="modal" data-target="#addTithe">
                                 <div class="add-button d-none" style="text-align: center">
                                     <b>+</b> Add Tithe
                                 </div>                                
                             </a>
-                            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" 
-                                    id="dropdownMenuReference" data-toggle="dropdown"
-                                    aria-haspopup="true" aria-expanded="false" data-reference="parent"
-                            >
-                                <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <div class="dropdown-menu border-success text-capitalize" 
+                            <div class="dropdown-menu rounded shadow border-0 text-capitalize" 
                                 aria-labelledby="dropdownMenuReference"
                                 style="z-index:99999">                                
                                 <a class="dropdown-item" 
@@ -353,47 +344,48 @@
                             </div>
                         </a>                     
                     </div>
-
-                    <!-- actions on list  -->
-                    <div class="list-group font-weight-bold"  v-if = "expenditures_selected">
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportEpenditureToCSV" >
-                                <i class="fa fa-refresh" aria-hidden="true"></i>
-                            </button>                            
-                    </div>
-                    <div class="list-group font-weight-bold"  v-if = "tithes_selected">
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0" 
-                                 data-toggle="modal" data-target="#textModalCenter">
-                                 <i class="fa fa-refresh" aria-hidden="true"></i>
-                                Text People
-                            </button>
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
-                                 data-toggle="modal" data-target="#exportTithesToCSV" >
-                                 <i class="fa fa-refresh" aria-hidden="true"></i> Export To CSV
-                            </button>                            
-                    </div>
-                    <div class="list-group "  v-if = "offerings_selected">
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+                    <div class="d-none">
+                         <!-- actions on list  -->
+                        <div class="list-group font-weight-bold"  v-if = "expenditures_selected">
+                                <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportEpenditureToCSV" >
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                </button>                            
+                        </div>
+                        <div class="list-group font-weight-bold"  v-if = "tithes_selected">
+                                <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0" 
                                     data-toggle="modal" data-target="#textModalCenter">
                                     <i class="fa fa-refresh" aria-hidden="true"></i>
                                     Text People
-                            </button>   
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
-                                    data-toggle="modal" :data-target="`#exportOfferingsToCSV-${offering_type.id}`" >
-                                    <i class="fa fa-refresh" aria-hidden="true"></i> 
-                                    Export To CSV
-                            </button>                                                     
-                    </div>
-                    <div class="list-group font-weight-bold"  v-if = "any_other_selected">
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
-                                 data-toggle="modal" data-target="#exportIncomeToCSV" >
-                                 <i class="fa fa-refresh" aria-hidden="true"></i> Export To CSV
-                            </button>                            
-                    </div>
-                    <div class="list-group font-weight-bold" v-if = "tithes_selected || offerings_selected">
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
-                                data-toggle="modal" data-target="#deleteEnvelopes" >
-                                <i class="fa fa-refresh" aria-hidden="true"></i> Delete Envelope
-                            </button>                            
+                                </button>
+                                <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+                                    data-toggle="modal" data-target="#exportTithesToCSV" >
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> Export To CSV
+                                </button>                            
+                        </div>
+                        <div class="list-group "  v-if = "offerings_selected">
+                                <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+                                        data-toggle="modal" data-target="#textModalCenter">
+                                        <i class="fa fa-refresh" aria-hidden="true"></i>
+                                        Text People
+                                </button>   
+                                <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+                                        data-toggle="modal" :data-target="`#exportOfferingsToCSV-${offering_type.id}`" >
+                                        <i class="fa fa-refresh" aria-hidden="true"></i> 
+                                        Export To CSV
+                                </button>                                                     
+                        </div>
+                        <div class="list-group font-weight-bold"  v-if = "any_other_selected">
+                                <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+                                    data-toggle="modal" data-target="#exportIncomeToCSV" >
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> Export To CSV
+                                </button>                            
+                        </div>
+                        <div class="list-group font-weight-bold" v-if = "tithes_selected || offerings_selected">
+                                <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+                                    data-toggle="modal" data-target="#deleteEnvelopes" >
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> Delete Envelope
+                                </button>                            
+                        </div>
                     </div>
                 </div>
             </div>                               

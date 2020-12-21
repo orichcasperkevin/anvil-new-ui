@@ -7,95 +7,97 @@
             <content>          
                 <span class="mt-4">
                     <p><span class="mt-4 badge badge-pill badge-secondary">{{foundTithesAndOfferings}}</span> entries</p>
-                </span>                                                               
-                <table class="mt-5 table table-responsive-sm table-borderless">
-                    <thead>
-                        <tr>
-                            <th>                                     
-                                <label class="anvil-checkbox">All
-                                    <input type="checkbox" :value=true v-model="all_members">
-                                    <span class="anvil-checkmark"></span>
-                                </label>
-                            </th>
-                            <th></th>
-                            <th>
-                                <div class="dropdown">
-                                <a class="p-0 font-weight-bold btn btn-whte border-0 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Date
-                                </a>
-                                
-                                <div class="p-2 dropdown-menu border-0 shadow">
-                                        <div class="p-2 form-group d-flex justify-content-between">
-                                            <label class="mr-2">From</label>
-                                            <input type="date" name="bday" max="3000-12-31" 
-                                            min="1000-01-01" class="col-9 form-control" v-model="from_date"> 
-                                        </div> 
-                                        <div class="p-2 form-group d-flex justify-content-between">
-                                            <label class="mr-2">To</label>
-                                            <input type="date" name="bday" max="3000-12-31" 
-                                            min="1000-01-01" class="col-9 form-control" v-model="to_date"> 
-                                        </div> 
-                                        <div class="p-2 d-flex justify-content-end">
-                                            <button class="btn btn-sm btn-success"
-                                                :disabled = "!(from_date && to_date)"
-                                                @click="filterTithesAndOfferings()">
-                                                Filter
-                                            </button>
+                </span>   
+                <div class="rounded bg-white p-2">
+                    <table class="mt-5 table table-responsive-sm table-borderless">
+                            <thead>
+                                <tr>
+                                    <th>                                     
+                                        <label class="anvil-checkbox">All
+                                            <input type="checkbox" :value=true v-model="all_members">
+                                            <span class="anvil-checkmark"></span>
+                                        </label>
+                                    </th>
+                                    <th></th>
+                                    <th>
+                                        <div class="dropdown">
+                                        <a class="p-0 font-weight-bold btn btn-whte border-0 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            Date
+                                        </a>
+                                        
+                                        <div class="p-2 dropdown-menu border-0 shadow">
+                                                <div class="p-2 form-group d-flex justify-content-between">
+                                                    <label class="mr-2">From</label>
+                                                    <input type="date" name="bday" max="3000-12-31" 
+                                                    min="1000-01-01" class="col-9 form-control" v-model="from_date"> 
+                                                </div> 
+                                                <div class="p-2 form-group d-flex justify-content-between">
+                                                    <label class="mr-2">To</label>
+                                                    <input type="date" name="bday" max="3000-12-31" 
+                                                    min="1000-01-01" class="col-9 form-control" v-model="to_date"> 
+                                                </div> 
+                                                <div class="p-2 d-flex justify-content-end">
+                                                    <button class="btn btn-sm btn-success"
+                                                        :disabled = "!(from_date && to_date)"
+                                                        @click="filterTithesAndOfferings()">
+                                                        Filter
+                                                    </button>
+                                                </div>
                                         </div>
-                                </div>
-                                </div>
-                            </th>
-                            <th>Name</th>                        
-                            <th>Amount</th>                                
-                            <th>Type</th>
-                            <th>Method</th>                                    
-                        </tr>                                  
-                    </thead>                                                       
-                    <tbody >
-                        <tr v-for ="(data,index) in tithes_and_offerings.response" :key="index">                                
-                            <td>                                          
-                                <label class="anvil-checkbox">
-                                    <input multiple type="checkbox" 
-                                        :value="{'type': data.type_name,'id': data.id }"
-                                        v-model="envelope_ids">
-                                    <span class="anvil-checkmark"></span>
-                                </label>
-                            </td>                          
-                            <td>
-                                <h6>
-                                    <span class="badge badge-danger" style="height: 5px; width: 5px" v-if="! data.notified"
-                                        data-toggle="tooltip" data-placement="top" title="member has not been notified">
-                                        <span style="visibility: hidden">.</span>
-                                    </span>
-                                    <span class="badge badge-success" style="height: 5px; width: 5px" v-if="data.notified"
-                                        data-toggle="tooltip" data-placement="top" title="member has been notified">
-                                        <span style="visibility: hidden">.</span>
-                                    </span>
-                                </h6>
-                            </td>
-                            <td>{{$humanizeDate(data.date)}}</td>
-                            <td v-if = "data.member != null">
-                                <router-link :to="`/memberDetail/`+ data.user_id">
-                                        <span class = "text-secondary">{{data.member_full_name}}</span>
-                                </router-link>
-                            </td>
-                            <td v-if="data.service">{{data.service_type_name}} ({{data.service_date}})</td>
-                            <td v-if="data.group">
-                                <router-link  :to="`/groupDetail/`+ data.group_id" class="text-muted">                                    
-                                    <div>                                             
-                                        {{data.group_name}}
-                                    </div>                                                                                                                                
-                                </router-link>
-                            </td>
-                            <td v-if="! data.group && ! data.service && ! data.member && data.name_if_not_member">
-                                {{data.name_if_not_member}} <small>({{data.phone_if_not_member}})</small>
-                            </td>
-                            <td><p class="text-secondary">{{humanize(data.amount)}}</p></td> 
-                            <td>{{data.type_name}}</td>                               
-                            <td>{{data.mode_of_payment_name}}</td>                                                                                             
-                        </tr>
-                    </tbody>
-                </table>
+                                        </div>
+                                    </th>
+                                    <th>Name</th>                        
+                                    <th>Amount</th>                                
+                                    <th>Type</th>
+                                    <th>Method</th>                                    
+                                </tr>                                  
+                            </thead>                                                       
+                            <tbody >
+                                <tr v-for ="(data,index) in tithes_and_offerings.response" :key="index">                                
+                                    <td>                                          
+                                        <label class="anvil-checkbox">
+                                            <input multiple type="checkbox" 
+                                                :value="{'type': data.type_name,'id': data.id }"
+                                                v-model="envelope_ids">
+                                            <span class="anvil-checkmark"></span>
+                                        </label>
+                                    </td>                          
+                                    <td>
+                                        <h6>
+                                            <span class="badge badge-danger" style="height: 5px; width: 5px" v-if="! data.notified"
+                                                data-toggle="tooltip" data-placement="top" title="member has not been notified">
+                                                <span style="visibility: hidden">.</span>
+                                            </span>
+                                            <span class="badge badge-success" style="height: 5px; width: 5px" v-if="data.notified"
+                                                data-toggle="tooltip" data-placement="top" title="member has been notified">
+                                                <span style="visibility: hidden">.</span>
+                                            </span>
+                                        </h6>
+                                    </td>
+                                    <td>{{$humanizeDate(data.date)}}</td>
+                                    <td v-if = "data.member != null">
+                                        <router-link :to="`/memberDetail/`+ data.user_id">
+                                                <span class = "text-secondary">{{data.member_full_name}}</span>
+                                        </router-link>
+                                    </td>
+                                    <td v-if="data.service">{{data.service_type_name}} ({{data.service_date}})</td>
+                                    <td v-if="data.group">
+                                        <router-link  :to="`/groupDetail/`+ data.group_id" class="text-muted">                                    
+                                            <div>                                             
+                                                {{data.group_name}}
+                                            </div>                                                                                                                                
+                                        </router-link>
+                                    </td>
+                                    <td v-if="! data.group && ! data.service && ! data.member && data.name_if_not_member">
+                                        {{data.name_if_not_member}} <small>({{data.phone_if_not_member}})</small>
+                                    </td>
+                                    <td><p class="text-secondary">{{humanize(data.amount)}}</p></td> 
+                                    <td>{{data.type_name}}</td>                               
+                                    <td>{{data.mode_of_payment_name}}</td>                                                                                             
+                                </tr>
+                            </tbody>
+                    </table>
+                </div>                                                            
             </content>
         </div>                        
     </div>
